@@ -5,7 +5,7 @@
 			<!-- 如下代码也能实现功能，但是不太推荐，因为有点违反原则，因为修改了props -->
 			<!-- <input type="checkbox" v-model="todo.done"/> -->
 			<span v-show="!todo.isEdit">{{ todo.title }}</span>
-			<input type="text" v-show="todo.isEdit" :value="todo.title" @blur="handleBlur(todo, $event)"
+			<input v-show="todo.isEdit" type="text" :value="todo.title" @blur="handleBlur(todo, $event)"
 				ref="inputTitle">
 		</label>
 		<button class="btn btn-danger" @click="handleDelete(todo.id)">删除</button>
@@ -42,19 +42,35 @@ export default {
 				todo.isEdit = true
 
 			} else {
-				// console.log('@')
+				//console.log('@@@');
 				this.$set(todo, 'isEdit', true)
 			}
+			//this.$refs.inputTitle.focus()
+			/* this.$nextTick(() => {
+				this.$refs.inputTitle.focus()
+			}) */
 			this.$nextTick(function () {
+				//Vue 在内部执行 $nextTick 回调时，会把回调绑定到当前组件实例上执行。
+				//换句话说，Vue 会用类似 callback.call(vm) 的方式调用回调。
 				this.$refs.inputTitle.focus()
 			})
+
+
+
+			/* setTimeout(() => {
+				this.$refs.inputTitle.focus()
+			}, 200) */
+
 		},
 		//失去焦点回调（真正执行修改逻辑）
-		handleBlur(todo, e) {
+		handleBlur(todo, event) {
 			todo.isEdit = false
-			if (!e.target.value.trim()) return alert('输入不能为空！')
-			this.$bus.$emit('updateTodo', todo.id, e.target.value)
-		}
+			if (event.target.value.trim() === '') {
+				return alert('内容不能为空')
+			}
+			this.$bus.$emit('updateTodo', todo.id, event.target.value)
+		},
+
 	},
 }
 </script>
