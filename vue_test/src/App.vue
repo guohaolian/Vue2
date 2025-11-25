@@ -1,47 +1,20 @@
 <template>
-	<div class="container">
-
-		<Category title="游戏">
-			<template slot-scope="atguigu">
-				<ul>
-					<li v-for="(g, index) in atguigu.games" :key="index">{{ g }}</li>
-				</ul>
-			</template>
-		</Category>
-
-		<Category title="游戏">
-			<template slot-scope="{games}"><!--解构赋值 -->
-				<ol>
-					<li style="color:red" v-for="(g, index) in games" :key="index">{{ g }}</li>
-				</ol>
-			</template>
-		</Category>
-
-		<Category title="游戏">
-			<template slot-scope="{games}">
-				<h4 v-for="(g, index) in games" :key="index">{{ g }}</h4>
-			</template>
-		</Category>
-
+	<div>
+		<Count />
+		<hr>
+		<Person />
 	</div>
 </template>
 
 <script>
-import Category from './components/Category'
+import Count from './components/Count'
+import Person from './components/Person'
+
 export default {
 	name: 'App',
-	components: { Category },
+	components: { Count, Person },
+	mounted() {
+		// console.log('App',this)
+	},
 }
 </script>
-
-<style scoped>
-.container,
-.foot {
-	display: flex;
-	justify-content: space-around;
-}
-
-h4 {
-	text-align: center;
-}
-</style>
